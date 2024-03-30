@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Post>
+@{
+    ViewData["Title"] = "Home Page";
+    ViewData["TagStr"] = "";
+}
+
+<div class="d-flex align-content-start flex-wrap gap-3">
+    @foreach (var item in Model)
+    {
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">@item.Title</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">
+                    @item.User.Name
+                </h6>
+                <h6 class="card-subtitle mb-2 text-body-secondary">@item.Category.Name</h6>
+                <h6 class="card-subtitle mb-2 text-body-secondary">
+                    @for (int i = 0; i < item.Tags.Count; i++)
+                    {
+                        if (i == item.Tags.Count - 1)
+                        {
+                            ViewBag.TagStr += item.Tags.ElementAt(i).Name;
+                        }
+                        else
+                        {
+                            ViewBag.TagStr += item.Tags.ElementAt(i).Name + " | ";
+                        }
+                    }
+                    @ViewBag.TagStr
+                </h6>
+                @{
+                    ViewData["TagStr"] = "";
+                }
+                <p class="card-text">@* @Html.DisplayFor(modelItem => item.Content) *@
+                    @Html.Raw(item.Content)
+                    </p>
+                <a asp-action="Post" asp-route-id="@item.Id" class="card-link">Article</a>
+            </div>
+        </div>
+    }
+
+</div>
